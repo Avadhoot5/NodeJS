@@ -9,7 +9,7 @@ const myServer = http.createServer((req, res) => {
     console.log('req received', ctr);
     
     // append incoming req to log file
-    let log = `${Date.now()}: ${req.url} Hello user \n`
+    let log = `${Date.now()}: ${req.method} ${req.url} Hello user \n`
     if (req.url === '/favicon.ico') return res.end();
 
     const myUrl = url.parse(req.url, true);

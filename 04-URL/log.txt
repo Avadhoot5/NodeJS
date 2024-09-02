@@ -1,7 +1,3 @@
-1725278773040: /about?test=%27hello%27 Hello user 
-1725278777849: /about Hello user 
-1725278784893: /about?test=%27hello%27 Hello user 
-1725279007465: /about Hello user 
-1725279030381: /about?myname=avadhoot Hello user 
-1725279064062: /about?myname=avadhoot Hello user 
-1725279072547: /about?myname=adad Hello user 
+1725280299508: GET /about?myname=avadhoot Hello user 
+1725280300523: GET /about Hello user 
+1725280301557: GET /about Hello user 
