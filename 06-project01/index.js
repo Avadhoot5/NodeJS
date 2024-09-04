@@ -6,6 +6,15 @@ const fs = require('fs');
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+    console.log('hello from middleware 1');
+    fs.appendFile('log.txt', `\n ${Date.now()}: ${req.method}: ${req.path}`, (err, data) => {
+        if (!err) {
+            next();
+        }
+    })
+})
+
 // rendering HTML document for users route
 // SSR page
 
