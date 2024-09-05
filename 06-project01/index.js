@@ -38,13 +38,19 @@ app.get('/api/users/:id', (req, res) => {
     const userId = req.params.id;
     let user = users.find((user) => user.id === parseInt(userId));
     if (!user) {
-        res.status(400).json({message: "user not found"});
+        res.status(404).json({message: "user not found"});
     }
     res.json(user);
 })
 
 app.post('/api/users', (req, res) => {
     const id = users.length + 1;
+
+    const body = req.body;
+    if (!body || !body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title) {
+        res.status(400).json({message: 'All fields are required'})
+    }
+
     const userData = {id, ...req.body};
     users.push(userData);
 
