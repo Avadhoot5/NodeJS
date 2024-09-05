@@ -3,6 +3,8 @@ const app = express();
 const PORT = 3000;
 const users = require('./MOCK_DATA.json');
 const fs = require('fs');
+const mongoose = require('mongoose');
+const User = require('./db/index');
 
 app.use(express.json());
 
@@ -14,6 +16,9 @@ app.use((req, res, next) => {
         }
     })
 })
+
+// mongoose connect URL
+
 
 // rendering HTML document for users route
 // SSR page
