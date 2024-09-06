@@ -1,18 +1,20 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const mongoose = require('mongoose');
-require('dotenv').config();
 const userRouter = require('./routes/user');
+const {connectMongoDB} = require('./connection');
+const {logReqRes} = require('./middlewares/index');
 
 app.use(express.json());
 
 // mongoose connect URL
-mongoose.connect(process.env.MONGO_URI)
+connectMongoDB()
 .then(() => console.log("Database connected"))
 .catch((error) => console.log(error))
 
-app.use('/api', userRouter);
+app.use(logReqRes('log.txt'));
+
+app.use('/api/users', userRouter);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)

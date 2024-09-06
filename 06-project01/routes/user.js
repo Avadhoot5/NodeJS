@@ -10,15 +10,15 @@ const {
 } = require('../controller/userController');
 
 // REST API
-router.get('/users', getAllUsers)
+router.get('/', getAllUsers)
 
-router.get('/users/:id', getUser)
+router.get('/:id', getUser)
 
-router.post('/users', addUser)
+router.post('/', addUser)
 
-router.patch('/users/:id', updateUser)
+router.patch('/:id', updateUser)
 
 // Delete a user
-router.delete('/users/:id', deleteUser)
+router.delete('/:id', deleteUser)
 
 module.exports = router;
