@@ -1,102 +1,18 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const users = require('./MOCK_DATA.json');
-const fs = require('fs');
 const mongoose = require('mongoose');
-const User = require('./db/index');
+require('dotenv').config();
+const userRouter = require('./controller/userController');
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-    console.log('hello from middleware 1');
-    fs.appendFile('log.txt', `\n ${Date.now()}: ${req.method}: ${req.path}`, (err, data) => {
-        if (!err) {
-            next();
-        }
-    })
-})
-
 // mongoose connect URL
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("Database connected"))
+.catch((error) => console.log(error))
 
-
-// rendering HTML document for users route
-// SSR page
-
-app.get('/users', (req, res) => {
-    let html = `
-    <ul>
-        ${users.map((user) => `<li>${user.first_name}</li>`).join("")}
-    </ul>
-    `
-    res.send(html);
-})
-
-// Hybrid server
-
-// REST API
-app.get('/api/users', (req, res) => {
-    res.json(users);
-})
-
-app.get('/api/users/:id', (req, res) => {
-    const userId = req.params.id;
-    let user = users.find((user) => user.id === parseInt(userId));
-    if (!user) {
-        res.status(404).json({message: "user not found"});
-    }
-    res.json(user);
-})
-
-app.post('/api/users', (req, res) => {
-    const id = users.length + 1;
-
-    const body = req.body;
-    if (!body || !body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title) {
-        res.status(400).json({message: 'All fields are required'})
-    }
-
-    const userData = {id, ...req.body};
-    users.push(userData);
-
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
-        if (err) console.log("not able to write the data");
-        return res.status(201).json({'User created sucessfully!': id});
-    })
-})
-
-app.patch('/api/users/:id', (req, res) => {
-    const userId = parseInt(req.params.id);
-    const userIndex = users.findIndex((user) => user.id === userId);
-    const updatedDetails = {id: userId, ...req.body};
-
-    if (userIndex > -1) {
-        users[userIndex] = updatedDetails;
-    } else {
-        return res.status(400).json({message: "user not found"});
-    }
-
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
-        if (err) console.log("not able to write the data");
-        return res.status(201).json({'User details updated sucessfully!': userId});
-    })
-
-})
-
-// Delete a user
-app.delete('/api/users/:id', (req, res) => {
-    const userId = parseInt(req.params.id);
-    let deleteUser = users.filter((user) => user.id !== userId);
-
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(deleteUser), (err, data) => {
-        if (err) console.log("not able to write the data");
-        if (!err) {
-            return res.status(201).json({message: 'User deleted sucessfully!'});
-        } else {
-            return res.status(401).json({message: 'User Not Found!'})
-        }
-    })
-})
+app.use('/api', userRouter);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)

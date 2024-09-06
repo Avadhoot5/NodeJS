@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -17,7 +16,7 @@ const userSchema = new mongoose.Schema({
     jobTitle: {
         type: String
     },
-}, {timest} )
+}, {timestamps: true} )
 
 const User = mongoose.model('User', userSchema);
 
