@@ -3,7 +3,7 @@ const app = express();
 const PORT = 3000;
 const mongoose = require('mongoose');
 require('dotenv').config();
-const userRouter = require('./controller/userController');
+const userRouter = require('./routes/user');
 
 app.use(express.json());
 

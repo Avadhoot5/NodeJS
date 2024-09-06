@@ -1,19 +1,15 @@
-const express = require('express');
 const {User} = require('../db/index');
-const router = express.Router()
 
-
-// REST API
-router.get('/users', async (req, res) => {
+let getAllUsers = async (req, res) => {
     const users = await User.find({ });
     if (users) {
         res.status(200).json({users})
     } else {
         res.status(400).json({message: 'Not able to get users'});
     }
-})
+}
 
-router.get('/users/:id', async (req, res) => {
+let getUser = async (req, res) => {
     const userId = req.params.id
     try {
         let user = await User.findById(userId);
@@ -25,9 +21,9 @@ router.get('/users/:id', async (req, res) => {
     } catch (error) {
         res.status(404).json({message: 'user not found'});
     }
-})
+}
 
-router.post('/users', async (req, res) => {
+let addUser = async (req, res) => {
     const body = req.body;
     if (!body || !body.firstName || !body.lastName || !body.email || !body.jobTitle) {
         res.status(400).json({message: 'All fields are required'})
@@ -42,10 +38,9 @@ router.post('/users', async (req, res) => {
     } catch (error) {
         res.status(400).json({message: 'Please enter correct credentials'});
     }
-    
-})
+}
 
-router.patch('/users/:id', async (req, res) => {
+let updateUser = async (req, res) => {
     const userId = req.params.id;
     try {
         const updateUser = await User.findByIdAndUpdate(userId, req.body)
@@ -57,10 +52,9 @@ router.patch('/users/:id', async (req, res) => {
     } catch (error) {
         res.status(400).json({message: 'User not updated'})
     }
-})
+}
 
-// Delete a user
-router.delete('/users/:id', async (req, res) => {
+let deleteUser = async (req, res) => {
     const userId = req.params.id;
     try {
         const deleteUser = await User.findByIdAndDelete(userId)
@@ -72,7 +66,12 @@ router.delete('/users/:id', async (req, res) => {
     } catch (error) {
         res.status(400).json({message: 'Unable to delete user'})
     }
-})
+}
 
-
-module.exports = router;
+module.exports = {
+    getAllUsers,
+    getUser,
+    addUser,
+    updateUser,
+    deleteUser
+}
