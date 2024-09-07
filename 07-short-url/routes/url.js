@@ -10,9 +10,7 @@ const {
 // get the url from user
 router.post('/', handleShortUrl);
 
-
-
-router.get('/url/:id', handleRedirect);
+router.get('/:id', handleRedirect);
 
 router.get('/analytics/:id', handleAnalytics);
 

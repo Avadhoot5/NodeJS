@@ -13,7 +13,9 @@ const handleShortUrl = async (req, res) => {
         visitHistory: []
     })
     if (urlDone) {
-        return res.status(200).json({id: shortID});
+        return res.render('home', {
+            id: shortID
+        });
     }
 }
 

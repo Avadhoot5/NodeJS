@@ -3,11 +3,13 @@ const PORT = 3000;
 const app = express();
 const { connectMongoDB } = require('./connection');
 const urlRoute = require('./routes/url');
+const staticRoute = require('./routes/staticRouter');
 const path = require('path');
 const {URL} = require('./model/urlShort');
 
 // Parsing the body
 app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 
 // MongoDB connect 
 connectMongoDB()
@@ -19,15 +21,9 @@ app.set('view engine', 'ejs');
 
 app.set('views', path.resolve('./views'))
 
-app.get('/test', async (req, res) => {
-    const allUrls = await URL.find({});
-    return res.render('home', {
-        urls: allUrls
-    });
-})
-
 // Routes
 app.use('/url', urlRoute);
+app.use('/', staticRoute);
 
 app.listen(PORT, () => {
     `App Listening on Port ${PORT}`
