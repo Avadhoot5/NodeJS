@@ -10,10 +10,14 @@ const handleSignup = async (req, res) => {
 
 const handleSignin = async (req, res) => {
     const { email, password } = req.body;
-    const data = await User.create({
+    const user = await User.find({
         email, password
     });
-    return res.render('home');
+    if (!user) {
+        return res.render('signin', {
+            error: 'Invalid Username or password'
+        })
+    }
 }
 
 
