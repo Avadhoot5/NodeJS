@@ -4,8 +4,8 @@ const app = express();
 const { connectMongoDB } = require('./connection');
 const urlRoute = require('./routes/url');
 const staticRoute = require('./routes/staticRouter');
+const userRoute = require('./routes/user');
 const path = require('path');
-const {URL} = require('./model/urlShort');
 
 // Parsing the body
 app.use(express.json());
@@ -24,6 +24,7 @@ app.set('views', path.resolve('./views'))
 // Routes
 app.use('/url', urlRoute);
 app.use('/', staticRoute);
+app.use('/user', userRoute);
 
 app.listen(PORT, () => {
     `App Listening on Port ${PORT}`
